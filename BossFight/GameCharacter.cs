@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace BossFight
         public int Health;
         public int Strength;
         public int Stamina;
-        private int _maxStamina;
+        private readonly int _maxStamina;
 
         //Constructor ctor
         //var Player = new GameCharacter(100, 20, 40)
@@ -25,23 +26,34 @@ namespace BossFight
         }
 
         //Metoder
-        public void Fight(int str)
+        public bool Fight(GameCharacter opponent, string opponentName, int dmg)
         {
+            Random rnd = new Random();
+
             if (Stamina == 0)
             {
                 Recharge();
+                return false;
+            }
+
+            if (opponent.Health - dmg < 0)
+            {
+                opponent.Health = 0;
             }
             else
             {
-                Health -= str;
-                Stamina -= 10;
+                opponent.Health -= dmg;
             }
+
+            Stamina -= 10;
+
+
+            return true;
 
 
         }
         public void Recharge()
         {
-            //stamina = maxstamina
             Stamina = _maxStamina;
         }
 

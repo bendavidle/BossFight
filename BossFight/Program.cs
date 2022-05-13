@@ -9,20 +9,30 @@ namespace BossFight
             var Boss = new GameCharacter(400, 30, 10);
             var Hero = new GameCharacter(100, 20, 40);
 
+
+            bool isPlayer = true;
             Random rnd = new Random();
 
-
-            while (Boss.Health > 0)
+            while (Boss.Health > 0 && Hero.Health > 0)
             {
-                bool isPlayer = true;
-                var playerName = isPlayer ? "Hero" : "Boss";
-                var player = isPlayer ? Hero : Boss;
-                int dmg = rnd.Next(0, player.Strength + 1);
 
-                player.Fight(dmg);
-                Console.WriteLine($"{playerName} hit {playerName} with {dmg} damage, {playerName} has {player.Health} left.");
+                string playerName = isPlayer ? "Hero" : "Boss";
+                string opponentName = isPlayer ? "Boss" : "Hero";
+                var player = isPlayer ? Hero : Boss;
+                var opponent = isPlayer ? Boss : Hero;
+                int dmg = opponentName == "Boss" ? player.Strength : rnd.Next(0, opponent.Strength + 1);
+
+                Console.WriteLine(player.Fight(opponent, opponentName, dmg)
+                    ? $"{playerName} hit {opponentName} with {dmg} damage, {opponentName} has {opponent.Health} hp left. {playerName} has {player.Stamina} stamina left"
+                    : $"{playerName} recharged!");
+
                 isPlayer = !isPlayer;
             }
+
+            string winnerName = isPlayer ? "Boss" : "Hero";
+
+            Console.WriteLine(winnerName + " won!");
+
 
 
         }
